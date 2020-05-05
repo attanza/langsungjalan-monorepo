@@ -37,6 +37,10 @@ services:
       - redis
     ports:
       - "4444:4444"
+    links:
+      - microservice
+    networks:
+      - langsungjalan_network
 
   microservice:
     build: ./microservice
@@ -44,3 +48,7 @@ services:
       - mongo
     ports:
       - "12000:12000"
+    networks:
+      - langsungjalan_network
+networks:
+  langsungjalan_network:
