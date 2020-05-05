@@ -22,6 +22,14 @@ services:
     ports:
       - 6379:6379
 
+  mongo:
+    image: mongo:4.2.6-bionic
+    restart: always
+    volumes:
+      - /home/ubuntu/volumes/mongo:/data/db
+    ports:
+      - 27017:27017
+
   api:
     build: ./api
     depends_on:
@@ -29,3 +37,10 @@ services:
       - redis
     ports:
       - "4444:4444"
+
+  microservice:
+    build: ./microservice
+        depends_on:
+          - mongo
+        ports:
+          - "12000:12000"
