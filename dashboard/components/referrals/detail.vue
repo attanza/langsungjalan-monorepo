@@ -1,0 +1,126 @@
+<template>
+  <div>
+    <v-card flat>
+      <v-container grid-list-md fluid style="padding: 0px;">
+        <v-toolbar flat color="transparent">
+          <v-spacer />
+          <Tbtn
+            color="primary"
+            icon="chevron_left"
+            icon-mode
+            tooltip-text="Kembali"
+            @onClick="toHome"
+          />
+
+          <Tbtn
+            v-if="checkPermission('delete-referral')"
+            color="primary"
+            icon="delete"
+            icon-mode
+            tooltip-text="Hapus"
+            @onClick="confirmDelete"
+          />
+        </v-toolbar>
+        <v-card-text>
+          <sharedForm
+            :items="formItem"
+            :show-button="checkPermission('update-referral')"
+            :init-value="initValue"
+            @onSubmit="editData"
+          />
+        </v-card-text>
+      </v-container>
+    </v-card>
+    <Dialog
+      :show-dialog="showDialog"
+      :text="$messages.general.CONFIRM_DELETE"
+      @onClose="showDialog = false"
+      @onConfirmed="removeData"
+    />
+  </div>
+</template>
+
+<script>
+import { global, catchError } from "~/mixins"
+import Dialog from "~/components/Dialog"
+import sharedForm from "../sharedForm"
+import { formItem } from "./util"
+
+export default {
+  components: { Dialog, sharedForm },
+  mixins: [global, catchError],
+  data() {
+    return {
+      link: "/referrals",
+      formItem: formItem,
+      showDialog: false,
+      initValue: null
+    }
+  },
+
+  mounted() {
+    this.setInitValue()
+  },
+
+  methods: {
+    setInitValue() {
+      if (this.currentEdit) {
+        this.initValue = {
+          ...this.currentEdit,
+          validUntil: this.$moment(this.currentEdit.validUntil).format(
+            "YYYY-MM-DD"
+          )
+        }
+      }
+    },
+    toHome() {
+      this.$router.go(-1)
+    },
+
+    async editData(data) {
+      try {
+        const postData = {
+          ...data,
+          validUntil: this.$moment(data.validUntil).toISOString()
+        }
+        this.activateLoader()
+        if (this.currentEdit) {
+          const resp = await this.$axios.$put(
+            this.link + "/" + this.currentEdit._id,
+            postData
+          )
+          this.$store.commit("currentEdit", resp.data)
+          this.setInitValue()
+          this.showNoty(this.$messages.form.UPDATED, "success")
+          this.deactivateLoader()
+        }
+      } catch (e) {
+        this.deactivateLoader()
+        this.catchError(e)
+      }
+    },
+    confirmDelete() {
+      this.showDialog = !this.showDialog
+    },
+    async removeData() {
+      try {
+        this.activateLoader()
+        if (this.currentEdit) {
+          const resp = await this.$axios.$delete(
+            this.link + "/" + this.currentEdit._id
+          )
+          if (resp.meta.status === 200) {
+            this.showNoty(this.$messages.form.DELETED, "success")
+            this.$router.push(this.link)
+          }
+        }
+        this.deactivateLoader()
+      } catch (e) {
+        this.deactivateLoader()
+        this.showDialog = false
+        this.catchError(e)
+      }
+    }
+  }
+}
+</script>
