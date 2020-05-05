@@ -1,22 +1,12 @@
-# lj_dashbord_v2
+# Langsung Jalan Admin Dashboard
 
-> Langsung Jalan Dashboard Version 2
+## Dependencies
 
-## Build Setup
+1. Langsung Jalan Main Back End API
 
-``` bash
-# install dependencies
-$ yarn install
+## Setup
 
-# serve with hot reload at localhost:3000
-$ yarn dev
-
-# build for production and launch server
-$ yarn build
-$ yarn start
-
-# generate static project
-$ yarn generate
-```
-
-For detailed explanation on how things work, check out [Nuxt.js docs](https://nuxtjs.org).
+1. run `npm i`
+2. copy the .env file
+3. run `npm run build`
+4. run `npm run prod`
