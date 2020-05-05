@@ -17,10 +17,15 @@ services:
       # MYSQL_USER: ${MYSQL_USER}
       # MYSQL_PASSWORD: ${MYSQL_PASSWORD}
       # MYSQL_DATABASE: ${MYSQL_ROOT_PASSWORD}
+  redis:
+    image: redis:5.0
+    ports:
+      - 6379:6379
 
   api:
     build: ./api
     depends_on:
       - mysql
+      - redis
     ports:
       - "4444:4444"
