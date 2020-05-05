@@ -57,5 +57,13 @@ services:
       - "12000:12000"
     networks:
       - langsungjalan_network
+
+  dashboard:
+    build: ./dashboard
+    ports:
+      - "13000:13000"
+    networks:
+      - langsungjalan_network
+
 networks:
   langsungjalan_network:
