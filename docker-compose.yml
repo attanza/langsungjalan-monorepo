@@ -9,10 +9,14 @@ services:
     volumes:
       - /home/ubuntu/volumes/mysql:/var/lib/mysql
     environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-      MYSQL_DATABASE: ${MYSQL_ROOT_PASSWORD}
-      MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: P4sw0rd@langsungjalan.com
+      MYSQL_USER: developer
+      MYSQL_PASSWORD: P4sw0rd@langsungjalan.com
+      MYSQL_DATABASE: langsungjalan_db
+      # MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      # MYSQL_USER: ${MYSQL_USER}
+      # MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      # MYSQL_DATABASE: ${MYSQL_ROOT_PASSWORD}
 
   api:
     build: ./api
