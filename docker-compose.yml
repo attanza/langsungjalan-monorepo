@@ -1,6 +1,22 @@
 version: "3"
 services:
+  mysql:
+    image: mysql:5.7
+    command: --default-authentication-plugin=mysql_native_password
+    ports:
+      - 3306:3306
+    restart: unless-stopped
+    volumes:
+      - /home/ubuntu/volumes/mysql:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD}"
+      MYSQL_DATABASE: "${"${MYSQL_ROOT_PASSWORD}"}"
+      MYSQL_USER: "${MYSQL_USER}"
+      MYSQL_PASSWORD: "${MYSQL_PASSWORD}"
+
   api:
     build: ./api
+    depends_on:
+      - mysql
     ports:
       - "4444:4444"
