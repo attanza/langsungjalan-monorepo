@@ -40,7 +40,7 @@ services:
 
   microservice:
     build: ./microservice
-      depends_on:
-        - mongo
-      ports:
-        - "12000:12000"
+    depends_on:
+      - mongo
+    ports:
+      - "12000:12000"
